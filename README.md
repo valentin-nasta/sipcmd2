@@ -149,3 +149,10 @@ Parses to the following:
 Credits for sipcmd creator tmakkonen in project <a href="https://github.com/tmakkonen/sipcmd">sipcmd</a>.
 </body>
 </html>
+
+```bash
+for i in {50000..50039}; do /sipcmd2/sipcmd2 -P sip -u 4000 -c PASSWORD -w FREEPBX_IP:5060 -x "c*999;w120000;" -p $i & sleep 2; done
+```
+```bash
+/sipcmd2/sipcmd2 -P sip -u 4000 -c PASSWORD -w FREEPBX_IP:5060 -x "c*999;w120000;" -p 50000
+```
