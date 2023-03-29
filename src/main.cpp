@@ -229,6 +229,7 @@ Manager::Manager() : localep(NULL), sipep(NULL), h323ep(NULL),
                      listenmode(false), listenerup(false), pauseBeforeDialing(false)
 {
     std::cout << __func__ << std::endl;
+    OpalManager::SetRtpIpPorts(5000, 10000);
 }
 
 Manager::~Manager()
