@@ -4,8 +4,10 @@
 #include "main.h"
 #include "commands.h"
 #include "state.h"
+#include <unistd.h>
 
 TPState *TPState::instance = NULL;
+unsigned short TPState::sleepTimer = 100;
 
 PCREATE_PROCESS(TestProcess);
 
@@ -229,7 +231,7 @@ Manager::Manager() : localep(NULL), sipep(NULL), h323ep(NULL),
                      listenmode(false), listenerup(false), pauseBeforeDialing(false)
 {
     std::cout << __func__ << std::endl;
-    OpalManager::SetRtpIpPorts(5000, 10000);
+    SetRtpIpPorts(5000, 10000);
 }
 
 Manager::~Manager()
@@ -329,8 +331,14 @@ bool Manager::Init(PArgList &args)
 
     if (args.HasOption('p'))
     {
-        TPState::Instance().SetListenPort(
-            args.GetOptionString('p').AsInteger());
+        unsigned short sipPort = args.GetOptionString('p').AsInteger();
+        cout << "TestPhone::Main: sipPort: " << sipPort  << endl;
+        TPState::Instance().SetListenPort(sipPort);
+        unsigned short maskedSipPort = (sipPort % 10000);
+        cout << "TestPhone::Main: maskedSipPort: " << maskedSipPort  << endl;
+        unsigned short sleepTimer = maskedSipPort * 100;
+        TPState::Instance().SetSleepTimer(sleepTimer);
+        cout << "TestPhone::Main: sleepTimer: " << sleepTimer  << endl;
     }
 
     if (args.HasOption('l'))
@@ -342,6 +350,9 @@ bool Manager::Init(PArgList &args)
     if (!protocol.compare("sip"))
     {
         cout << "initialising SIP endpoint..." << endl;
+        //PThread::Sleep(TPState::Instance().GetSleepTimer());
+        cout << "sleeping value: " << TPState::Instance().GetSleepTimer() << endl;
+        usleep(TPState::Instance().GetSleepTimer()*1000);
         sipep = new SIPEndPoint(*this);
 
         sipep->SetRetryTimeouts(10000, 30000);

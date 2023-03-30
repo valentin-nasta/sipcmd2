@@ -22,6 +22,7 @@ class TPState
 {
 private:
   static TPState *instance;
+  static unsigned short sleepTimer;
 
 public:
   enum TPConnState
@@ -39,7 +40,17 @@ public:
     H323,
     RTP
   };
-
+  
+  static void SetSleepTimer(unsigned short t)
+  {
+    sleepTimer = t;
+  }
+  
+  static unsigned short GetSleepTimer() 
+  {
+    return sleepTimer; 
+  }
+  
   static TPState &Instance()
   {
     if (!instance)
