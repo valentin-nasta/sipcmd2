@@ -150,9 +150,17 @@ Credits for sipcmd creator tmakkonen in project <a href="https://github.com/tmak
 </body>
 </html>
 
+call 4000 in a loop
 ```bash
 for i in {50000..50039}; do /sipcmd2/sipcmd2 -P sip -u 4000 -c PASSWORD -w FREEPBX_IP:5060 -x "c*999;w120000;" -p $i & sleep 2; done
 ```
+
+call 4000
 ```bash
 /sipcmd2/sipcmd2 -P sip -u 4000 -c PASSWORD -w FREEPBX_IP:5060 -x "c*999;w120000;" -p 50000
+```
+
+rebuild
+```bash
+git pull --rebase && git log -1 && make -B
 ```
